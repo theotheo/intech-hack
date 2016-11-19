@@ -1,0 +1,11 @@
+fake: &fake
+  build: .
+  ports:
+   - 8080
+  volumes:
+   - ./fakers:/fakers
+  # environment:
+   # Environment variables used by registrator to register services in consul
+    # SERVICE_NAME: inn
+    # SERVICE_TAGS: sample
+  command: nodejs app.js

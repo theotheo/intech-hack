@@ -1,0 +1,23 @@
+#!/bin/bash
+REPEAT=3
+for i in "$@"
+do
+case $i in
+    -r=*|--repeat=*)
+    REPEAT="${i#*=}"
+esac
+done
+echo "REPEAT = ${REPEAT}"
+
+rm result.txt
+for file in fakers/*; do
+    fbname=$(basename "$file" | cut -d. -f1)
+    # docker stop fake-${fbname}
+    echo -e "http://localhost/${fbname}:\t\c" >> result.txt
+    for (( c=1; c<=${REPEAT}; c++ ))
+    do
+      curl "http://localhost/${fbname}" >> result.txt
+      echo -e ', \c' >> result.txt
+    done
+    echo -e '\n' >> result.txt
+done

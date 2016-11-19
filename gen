@@ -1,0 +1,15 @@
+#!/bin/bash
+rm docker-compose-gen.yml
+
+for file in fakers/*; do
+    fbname=$(basename "$file" | cut -d. -f1)
+    cat >> docker-compose-gen.yml <<- EOM
+fake-${fbname}:
+    extends:
+        file: common-services.yml
+        service: fake
+    environment:
+        SERVICE_NAME: ${fbname}
+
+EOM
+done
