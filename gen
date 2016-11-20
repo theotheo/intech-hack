@@ -1,15 +1,28 @@
 #!/bin/bash
 rm docker-compose-gen.yml
 
+cat >> docker-compose-gen.yml <<- END
+version: '2'
+services:
+END
+
 for file in fakers/*; do
     fbname=$(basename "$file" | cut -d. -f1)
+    if [ ${file: -3} == ".py" ]; then
+
+        lang=python
+    fi
+    if [ ${file: -3} == ".js" ]; then
+        lang=nodejs
+    fi
+
     cat >> docker-compose-gen.yml <<- EOM
-fake-${fbname}:
-    extends:
-        file: common-services.yml
-        service: fake
-    environment:
-        SERVICE_NAME: ${fbname}
+    fake-${fbname}:
+        extends:
+          file: common-services.yml
+          service: fake-${lang}
+        environment:
+          SERVICE_NAME: ${fbname}
 
 EOM
 done

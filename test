@@ -16,7 +16,7 @@ for file in fakers/*; do
     echo -e "http://localhost/${fbname}:\t\c" >> result.txt
     for (( c=1; c<=${REPEAT}; c++ ))
     do
-      curl "http://localhost/${fbname}" >> result.txt
+      curl -L "http://localhost/${fbname}/" >> result.txt
       echo -e ', \c' >> result.txt
     done
     echo -e '\n' >> result.txt

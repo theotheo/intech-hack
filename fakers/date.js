@@ -3,7 +3,7 @@ var dateFormat = require('dateformat');
 
 module.exports = (params) => {
   let current = fakerator.date.recent();
-  let mask = 'yyyy.MM.dd';
+  let mask = 'yyyy.mm.dd';
   if(params !== undefined) {
     if(params['offset'] !== undefined) {
       let offset = params['offset'];

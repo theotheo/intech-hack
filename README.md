@@ -9,21 +9,21 @@
 
 Далее вся инфраструктура запускается следующим образом:
 ```
-$ docker-compose build
-$ docker-compose up
-$ bash run
+$ bash gen
+$ docker-compose -f docker-compose.yml -f docker-compose-gen.yml build
+$ docker-compose -f docker-compose.yml -f docker-compose-gen.yml up -d
 ```
 
 Посмотреть на запущенные сервисы можно через UI, предоставляемое Consul: ```http://localhost:8500/ui```
 
 Сервисы доступны на локальном адрес по роутам, совпадающими с именами соответствующих файлов. Например,
 ```
-$ curl localhost/inn
-$ curl localhost/region
+$ curl -L localhost/inn
+$ curl -L localhost/region
 ```
 И т.д., смотри папку ```fakers```
 
-Все сервисы можно оценить единовременно с помощью удобно скрипта:
+Все сервисы можно оценить единовременно с помощью удобного скрипта:
 ```
 $ bash test --repeat=5
 $ less result.txt

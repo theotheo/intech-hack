@@ -4,7 +4,7 @@ var r = require("random-js")();
 var generator = function(params) {
   let sex;
   const sexs = ['male', 'female'];
-  const langs = ['', 'ru-RU', 'fr-FR', 'de-DE'];
+  const langs = ['', 'ru-RU', 'fr-FR', 'de-DE']
   const code2lang = {
     undefined: r.pick(langs),
     '': r.pick(langs),
@@ -23,17 +23,20 @@ var generator = function(params) {
     sex = r.pick(sexs)
   }
 
+
+
   var lang = params['lang'];
   lang = code2lang[lang];
+  lang = 'ru-RU' // middle name exist only for Russian
 
   if(lang === undefined) {
     return res;
   }
 
-  let fakerator = Fakerator(lang);
+  fakerator = Fakerator(lang)
 
   if(sex === 'male') {
-    res = fakerator.names.middleNameM();
+    res = fakerator.names.middleNameF();
   } else if(sex === 'female') {
     res = fakerator.names.middleNameF();
   }

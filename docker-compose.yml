@@ -1,151 +1,48 @@
-# consul
-consul:
-  # command: -server -bootstrap
-  image: consul:latest
-  ports:
-    - 8300:8300
-    - 8400:8400  # rpc/rest
-    - 8500:8500  # ui
-    - 8600:8600/udp   # dns
-    # - 127.0.0.1:53:53/udp  # dns
 
-# Nginx Load Balancer
-lb:
-  image: 1science/nginx:1.9.6-consul
-  ports:
-    - 80:80
-  # links:
-  #   - consul:consul
-  volumes:
-    - ./etc/consul-template:/etc/consul-template
-  # Change this section to point on your Consul
-  environment:
-    CONSUL_URL: localhost:8500
-  net: "host"
+  # consul
+  consul:
+    # command: -server -bootstrap
+    image: consul:latest
+    ports:
+      - 8300:8300
+      - 8400:8400  # rpc/rest
+      - 8500:8500  # ui
+      - 8600:8600/udp   # dns
+      # - 127.0.0.1:53:53/udp  # dns
 
-# Registrator to register on local Consul
-registrator:
-  image: gliderlabs/registrator:latest
-  # links:
-  #   - consul:consul
-  volumes:
-    - /var/run/docker.sock:/tmp/docker.sock
-  # Change this section to point on your Consul
-  command: consul://localhost:8500
-  net: "host"
+  # Nginx Load Balancer
+  lb:
+    image: 1science/nginx:1.9.6-consul
+    ports:
+      - 80:80
+    # links:
+    #   - consul:consul
+    volumes:
+      - ./etc/consul-template:/etc/consul-template
+    # Change this section to point on your Consul
+    environment:
+      CONSUL_URL: localhost:8500
+    net: "host"
 
-# Applications
+  # Registrator to register on local Consul
+  registrator:
+    image: gliderlabs/registrator:latest
+    # links:
+    #   - consul:consul
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    # Change this section to point on your Consul
+    command: consul://localhost:8500
+    net: "host"
 
-fake-commentary:
-  build: ./python
-  ports:
-    - 8080
-  environment:
-    SERVICE_NAME: commentary
+  # Applications
 
-# fake: &fake
-#   build: .
-#   ports:
-#    - 8080
-#   volumes:
-#    - ./fakers:/fakers
-#   environment:
-#    # Environment variables used by registrator to register services in consul
-#     # SERVICE_NAME: inn
-#     SERVICE_TAGS: sample
-#   command: nodejs app.js
-
-
-
-# # 16. Фамилия
-# web16:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: surname
-#
-# # 17. Имя
-# fake17:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: name
-#
-# # 18. Отчество
-# fake18:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: middle_name
-#
-#
-# # 19. ФИО
-# fake19:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: fullname
-#
-# # 20. Язык
-# fake20:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: language
-#
-# # 23. Гражданство
-# fake23:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: citizenship
-#
-# # 27. ОКВЭД
-# fake27:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: okved
-#
-# # 42. Вид ТС
-# fake42:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: transport
-#
-# # 47 Металл
-# fake47:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: document_kind
-#
-# # 60 Металл
-# fake60:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: metall
-#
-# # 61 Типа банковской карты
-# fake61:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: bank_card
-#
-#
-# # 62 custom
-# fake62:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: custom
-#
-# # 68 цвет
-# fake68:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: color
-#
-# # 70. IP
-# fake70:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: ip
-
-
-# 72. время
-# fake72:
-#   <<: *fake
-#   environment:
-#     SERVICE_NAME: time
+  fake-java:
+    build: ./java
+    ports:
+      - 8080
+    volumes:
+      - ./fakers:/fakers
+    environment:
+      SERVICE_NAME: java
+    command: ./entrypoint.sh
